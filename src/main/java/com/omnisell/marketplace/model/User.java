@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Data
+@Data //Também do Lombok para criar os Getters e Setters
 public class User {
 
     @Id
