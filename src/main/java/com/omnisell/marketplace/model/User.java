@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Entity
 @Data //Também do Lombok para criar os Getters e Setters
+@Table(name = "users")
 public class User {
 
     @Id
