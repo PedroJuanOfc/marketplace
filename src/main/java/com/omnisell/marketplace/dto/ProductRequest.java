@@ -1,4 +1,4 @@
-package com.omnisell.marketplace.controller;
+package com.omnisell.marketplace.dto;
 
 import lombok.Data;
 

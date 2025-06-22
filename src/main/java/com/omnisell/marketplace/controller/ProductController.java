@@ -1,5 +1,6 @@
 package com.omnisell.marketplace.controller;
 
+import com.omnisell.marketplace.dto.ProductRequest;
 import com.omnisell.marketplace.model.Product;
 import com.omnisell.marketplace.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;

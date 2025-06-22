@@ -1,5 +1,6 @@
 package com.omnisell.marketplace.controller;
 
+import com.omnisell.marketplace.dto.OrderResponse;
 import com.omnisell.marketplace.model.Order;
 import com.omnisell.marketplace.model.OrderItem;
 import com.omnisell.marketplace.service.OrderService;
@@ -17,18 +18,26 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping("/{userId}")
-    public Order createOrder(@PathVariable Long userId, @RequestBody List<OrderItem> items) {
-        return orderService.createOrder(userId, items);
+    public OrderResponse createOrder(@PathVariable Long userId, @RequestBody List<OrderItem> items) {
+        Order order = orderService.createOrder(userId, items);
+        return orderService.mapToOrderResponse(order);
     }
+
 
     @GetMapping
-    public List<Order> getAllOrders() {
-        return orderService.getAllOrders();
+    public List<OrderResponse> getAllOrders() {
+        List<Order> orders = orderService.getAllOrders();
+        return orders.stream()
+                .map(orderService::mapToOrderResponse)
+                .toList();
     }
 
+
     @GetMapping("/{id}")
-    public Optional<Order> getOrderById(@PathVariable Long id) {
-        return orderService.getOrderById(id);
+    public OrderResponse getOrderById(@PathVariable Long id) {
+        Order order = orderService.getOrderById(id)
+                .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+        return orderService.mapToOrderResponse(order);
     }
 
     @DeleteMapping("/{id}")
