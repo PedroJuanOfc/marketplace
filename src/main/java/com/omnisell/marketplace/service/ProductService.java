@@ -1,7 +1,9 @@
 package com.omnisell.marketplace.service;
 
 import com.omnisell.marketplace.model.Product;
+import com.omnisell.marketplace.model.Category;
 import com.omnisell.marketplace.repository.ProductRepository;
+import com.omnisell.marketplace.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +16,13 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    public Product createProduct(Product product) {
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    public Product createProduct(Product product, Long categoryId) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
+        product.setCategory(category);
         return productRepository.save(product);
     }
 
