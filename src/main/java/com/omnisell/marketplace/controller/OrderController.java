@@ -5,6 +5,7 @@ import com.omnisell.marketplace.model.Order;
 import com.omnisell.marketplace.model.OrderItem;
 import com.omnisell.marketplace.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,11 +35,22 @@ public class OrderController {
 
 
     @GetMapping("/{id}")
-    public OrderResponse getOrderById(@PathVariable Long id) {
-        Order order = orderService.getOrderById(id)
-                .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
-        return orderService.mapToOrderResponse(order);
+    public ResponseEntity<OrderResponse> getOrderById(@PathVariable Long id) {
+        return orderService.getOrderById(id)
+                .map(orderService::mapToOrderResponse)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
+
+    @GetMapping("/user/{userId}")
+    public List<OrderResponse> getByUser(@PathVariable Long userId) {
+        return orderService.getAllOrders().stream()
+                .filter(o -> o.getUser().getId().equals(userId))
+                .map(orderService::mapToOrderResponse)
+                .toList();
+    }
+
+
 
     @DeleteMapping("/{id}")
     public void deleteOrder(@PathVariable Long id) {

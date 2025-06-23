@@ -3,6 +3,7 @@ package com.omnisell.marketplace.controller;
 import com.omnisell.marketplace.model.User;
 import com.omnisell.marketplace.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,10 +25,12 @@ public class UserController {
         return userService.createUser(user);
     }
 
-    @GetMapping("/{email}")
-    public User getUserByEmail(@PathVariable String email) {
-        return userService.getUserByEmail(email);
+    @GetMapping("/email/{email}")
+    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
+        User u = userService.getUserByEmail(email);
+        return u != null ? ResponseEntity.ok(u) : ResponseEntity.notFound().build();
     }
+
 
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Long id) {
