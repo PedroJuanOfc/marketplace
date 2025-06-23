@@ -36,4 +36,11 @@ public class CategoryController {
         categoryService.deleteCategory(id);
     }
 
+    @PutMapping("/{id}")
+    public Category updateCategory(@PathVariable Long id, @RequestBody Category dto) {
+        Category existing = categoryService.getCategoryById(id);
+        existing.setName(dto.getName());
+        return categoryService.createCategory(existing);
+    }
+
 }
